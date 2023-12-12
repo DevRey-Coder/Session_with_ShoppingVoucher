@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Voucher extends Model
 {
+    protected $fillable = ['voucher_no','total','note'];
     use HasFactory;
 }

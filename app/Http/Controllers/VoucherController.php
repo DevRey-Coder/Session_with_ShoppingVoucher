@@ -6,6 +6,7 @@ use App\Http\Resources\VoucherResource;
 use App\Models\Voucher;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class VoucherController extends Controller
 {
@@ -28,7 +29,7 @@ class VoucherController extends Controller
     {
         $request->validate([
            'items' => 'required|array',
-           'items.*.name' => 'required|string|in:products,name',
+           'items.*.name' => 'required|string',
            'items.*.amount' => 'required|integer',
            'note' => 'required|string|min:3'
         ]);
@@ -37,7 +38,7 @@ class VoucherController extends Controller
         // $table->integer('total');
         // $table->string('note')->nullable();
 
-        $voucher_no = fake()->regexify('LD\d{4}[a-z]{2}[!@#$%^&*]');
+        $voucher_no = Str::uuid();
         $amounts = collect($request->items);
         $total = $amounts->sum('amount');
         $note = $request->note;
@@ -47,7 +48,7 @@ class VoucherController extends Controller
            'total' => $total,
            'note' => $note
         ]);
-        $request->session()->put('voucher',$voucher);
+        $request->session()->put('voucher_id',$voucher->id);
 
         return response()->json([
            'status' => true,

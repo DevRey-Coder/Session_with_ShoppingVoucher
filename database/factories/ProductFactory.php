@@ -18,7 +18,6 @@ class ProductFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'amount' => fake()->numberBetween(1000,25000),
             'stock' => fake()->numberBetween(10,100)
         ];
     }
